@@ -47,6 +47,9 @@ team_tournament = pd.DataFrame({
 })
 
 
+
+
+# Team logos/flags
 team_logos = {
     "England": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/England.png",
     "France": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/France.png",
@@ -54,15 +57,6 @@ team_logos = {
     "Spain": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/Spain.png",
     "Switzerland": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/Switzerland.png"
 }
-
-# Team logos/flags
-# team_logos = {
-#     "England": "https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Flag_of_England.svg/1280px-Flag_of_England.svg.png",
-#     "France": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/1280px-Flag_of_France.svg.png",
-#     "Germany": "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1280px-Flag_of_Germany.svg.png",
-#     "Spain": "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Flag_of_Spain.svg/1280px-Flag_of_Spain.svg.png",
-#     "Switzerland": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Switzerland_%28Pantone%29.svg/188px-Flag_of_Switzerland_%28Pantone%29.svg.png"
-# }
 
 @st.cache_data
 def load_flag_images(df, logo_dict):
