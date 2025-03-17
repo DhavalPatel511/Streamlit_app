@@ -51,27 +51,46 @@ team_tournament = pd.DataFrame({
 
 # Team logos/flags
 team_logos = {
-    "England": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/England.png",
-    "France": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/France.png",
-    "Germany": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/Germany.png",
-    "Spain": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/Spain.png",
-    "Switzerland": "https://github.com/DhavalPatel511/Streamlit_app/main/flags/Switzerland.png"
+    "England": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/England.png",
+    "France": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/France.png",
+    "Germany": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/Germany.png",
+    "Spain": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/Spain.png",
+    "Switzerland": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/Switzerland.png"
 }
 
-@st.cache_data
+# @st.cache_data
+# def load_flag_images(df, logo_dict):
+#     flag_images = []
+#     for _, row in df.iterrows():
+#         team = row['team']
+#         try:
+#             response = requests.get(logo_dict[team])
+#             img = plt.imread(BytesIO(response.content))
+#             flag_images.append(img)
+#         except:
+#             # Add a blank image if loading fails
+#             flag_images.append(plt.imread(BytesIO(requests.get("https://via.placeholder.com/50").content)))
+#     return flag_images
+@st.cache_resource
 def load_flag_images(df, logo_dict):
+    """Load and cache team flags from GitHub URLs"""
     flag_images = []
     for _, row in df.iterrows():
         team = row['team']
-        try:
-            response = requests.get(logo_dict[team])
-            img = plt.imread(BytesIO(response.content))
-            flag_images.append(img)
-        except:
-            # Add a blank image if loading fails
-            flag_images.append(plt.imread(BytesIO(requests.get("https://via.placeholder.com/50").content)))
-    return flag_images
+        img_url = logo_dict.get(team, None)
+        
+        if img_url:
+            try:
+                response = requests.get(img_url)
+                img = plt.imread(BytesIO(response.content))
+            except:
+                img = None  # Instead of a broken placeholder
+        else:
+            img = None  # No logo available
 
+        flag_images.append(img)
+    
+    return flag_images
 
 @st.cache_data
 def team_of_the_tournament():
