@@ -1,8 +1,6 @@
 pandas
 numpy
-json
 matplotlib
 requests
 mplsoccer
 streamlit
-io
