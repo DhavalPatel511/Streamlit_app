@@ -58,19 +58,6 @@ team_logos = {
     "Switzerland": "https://raw.githubusercontent.com/DhavalPatel511/Streamlit_app/main/flags/Switzerland.png"
 }
 
-# @st.cache_data
-# def load_flag_images(df, logo_dict):
-#     flag_images = []
-#     for _, row in df.iterrows():
-#         team = row['team']
-#         try:
-#             response = requests.get(logo_dict[team])
-#             img = plt.imread(BytesIO(response.content))
-#             flag_images.append(img)
-#         except:
-#             # Add a blank image if loading fails
-#             flag_images.append(plt.imread(BytesIO(requests.get("https://via.placeholder.com/50").content)))
-#     return flag_images
 @st.cache_resource
 def load_flag_images(df, logo_dict):
     """Load and cache team flags from GitHub URLs"""
