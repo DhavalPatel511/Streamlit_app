@@ -44,14 +44,13 @@ An interactive web app built using **Streamlit** that explores historical data a
 
 
 ## ▶️ Getting Started Locally
-
-1. **Clone the repository:**
    ```bash
    git clone https://github.com/DhavalPatel511/Streamlit_app.git
    cd Streamlit_app
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   streamlit run app.py
 
-  python -m venv venv
-  source venv/bin/activate  # On Windows: venv\Scripts\activate
-  pip install -r requirements.txt
-  streamlit run app.py
+
 
