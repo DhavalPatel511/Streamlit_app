@@ -1,4 +1,4 @@
-from backend_analysis import get_tournament_data
+from utils.data_prep import get_tournament_data
 import streamlit as st # type: ignore
 from mplsoccer import Radar,grid # type: ignore
 import pandas as pd # type: ignore
@@ -102,64 +102,6 @@ def extract_gk_stats(df,player):
     }
 
     return gk_stats
-
-@st.cache_data
-def create_gk_radar(df, player1_name, player2_name):
-    """Create radar chart comparing two attacking players using mplsoccer"""
-    # Extract player stats
-    player1_stats = extract_gk_stats(df, player1_name)
-    player2_stats = extract_gk_stats(df, player2_name)
-    
-    # Parameters for attackers
-    params = list(player1_stats.keys())
-    player1_values = [player1_stats[param] for param in params]
-    player2_values = [player2_stats[param] for param in params]
-    
-    # Normalize values to 0-1 range
-    normalized_player1_values = []
-    normalized_player2_values = []
-    
-    for param, value1, value2 in zip(params, player1_values, player2_values):
-        if "%" in param:  # Percentage-based parameters
-            normalized_player1_values.append(value1 / 100)
-            normalized_player2_values.append(value2 / 100)
-        elif param == "Goals Conceded":  # Negative parameter (lower is better)
-            max_val = max(value1, value2)
-            normalized_player1_values.append(1 - (value1 / max_val if max_val > 0 else 0))
-            normalized_player2_values.append(1 - (value2 / max_val if max_val > 0 else 0))
-        else:  # Numeric parameters
-            max_val = max(value1, value2)
-            normalized_player1_values.append(value1 / max_val if max_val > 0 else 0)
-            normalized_player2_values.append(value2 / max_val if max_val > 0 else 0)
-
-    
-    # Create radar chart
-    radar = Radar(params, [0] * len(params), [1]* len(params), num_rings=4, ring_width=1, center_circle_radius=1)
-    
-    # Create figure and axis
-    fig, axs = grid(figheight=6, grid_height=0.915, title_height=0.06, title_space=0.01, grid_key='radar', axis=False)
-    
-    
-    # Plot radar
-    radar.setup_axis(ax=axs['radar']) 
-    radar.draw_circles(ax=axs['radar'], facecolor="#e9e9e9", edgecolor="#c9c9c9")
-    radar_poly, radar_poly2, vertices1, vertices2 = radar.draw_radar_compare(normalized_player1_values, normalized_player2_values, ax=axs['radar'],
-                                                            kwargs_radar={'facecolor': '#1a78cf', 'alpha': 0.6},
-                                                            kwargs_compare={'facecolor': '#66d8ba', 'alpha': 0.6})
-    
-    # Add title
-    axs['title'].text(0.01, 0.65, player1_name, fontsize=20, color='#1a78cf', ha='left', va='center')
-    axs['title'].text(0.99, 0.65, player2_name, fontsize=20, ha='right', va='center', color='#66d8ba')
-    
-    # Draw parameter and range labels
-    radar.draw_range_labels(ax=axs['radar'], fontsize=8)
-    radar.draw_param_labels(ax=axs['radar'], fontsize=12)
-    
-    return fig
-
-
-
-
 
 
 # euro_df = get_tournament_data(55,282)
